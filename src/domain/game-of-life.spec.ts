@@ -71,17 +71,9 @@ describe("GameOfLife", () => {
     });
 
     it("cell survive when having neighbours behind them", () => {
-      const gameOfLife = new GameOfLife([
-        [1, 1],
-        [1, 0],
-      ]).nextTick();
+      const gameOfLife = new GameOfLife([[1], [1], [1]]).nextTick();
 
-      expect(gameOfLife).to.deep.equal(
-        new GameOfLife([
-          [1, 1],
-          [1, 0],
-        ])
-      );
+      expect(gameOfLife).to.deep.equal(new GameOfLife([[0], [1], [0]]));
     });
   });
 
