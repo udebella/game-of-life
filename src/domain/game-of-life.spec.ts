@@ -13,13 +13,11 @@ class GameOfLife {
     if (this.board[0]) {
       for (let y = 0; y < this.board.length; y++) {
         for (let x = 0; x < this.board[y].length; x++) {
-          if (
-            this.aliveNeighbours(x, y) < 2 ||
-            this.aliveNeighbours(x, y) > 3
-          ) {
+          const aliveNeighbours = this.aliveNeighbours(x, y);
+          if (aliveNeighbours < 2 || aliveNeighbours > 3) {
             deadCells.push([x, y]);
           }
-          if (this.aliveNeighbours(x, y) === 3) {
+          if (aliveNeighbours === 3) {
             birthCells.push([x, y]);
           }
         }
