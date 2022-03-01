@@ -13,7 +13,9 @@ class GameOfLife {
 
   public nextTick(): GameOfLife {
     if (this.board[0]) {
-      this.board[0][0] = 0;
+      this.board[0].forEach((_, index) => {
+        this.board[0][index] = 0;
+      });
     }
     return this;
   }
@@ -31,6 +33,12 @@ describe("GameOfLife", () => {
       const gameOfLife = new GameOfLife({ board: [[1]] }).nextTick();
 
       expect(gameOfLife).to.deep.equal(new GameOfLife({ board: [[0]] }));
+    });
+
+    it("dies when two living cell are alone", () => {
+      const gameOfLife = new GameOfLife({ board: [[1, 1]] }).nextTick();
+
+      expect(gameOfLife).to.deep.equal(new GameOfLife({ board: [[0, 0]] }));
     });
   });
 });
