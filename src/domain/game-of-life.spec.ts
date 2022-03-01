@@ -12,18 +12,23 @@ class GameOfLife {
   }
 
   public nextTick(): GameOfLife {
+    const deadCells: number[][] = [];
     if (this.board[0]) {
       this.board[0].forEach((_, index) => {
         if (this.aliveNeighbours(index, 0) < 2) {
-          this.board[0][index] = 0;
+          deadCells.push([index, 0]);
         }
       });
     }
+    deadCells.forEach(([x, y]) => (this.board[y][x] = 0));
     return this;
   }
 
   private aliveNeighbours(x: number, y: number): number {
-    return 0;
+    return [x - 1, x + 1]
+      .filter((index) => index >= 0)
+      .filter((index) => index < this.board[y].length)
+      .filter((index) => this.board[y][index] === 1).length;
   }
 }
 
@@ -45,6 +50,12 @@ describe("GameOfLife", () => {
       const gameOfLife = new GameOfLife({ board: [[1, 1]] }).nextTick();
 
       expect(gameOfLife).to.deep.equal(new GameOfLife({ board: [[0, 0]] }));
+    });
+
+    it("only the middle cell survive when 3 cell aligned", () => {
+      const gameOfLife = new GameOfLife({ board: [[1, 1, 1]] }).nextTick();
+
+      expect(gameOfLife).to.deep.equal(new GameOfLife({ board: [[0, 1, 0]] }));
     });
   });
 });
