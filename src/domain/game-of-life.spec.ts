@@ -31,6 +31,10 @@ class GameOfLife {
       [x + 1, y],
       [x, y - 1],
       [x, y + 1],
+      [x - 1, y - 1],
+      [x + 1, y - 1],
+      [x - 1, y + 1],
+      [x + 1, y + 1],
     ]
       .filter(([, y]) => y >= 0)
       .filter(([, y]) => y < this.board.length)
@@ -74,8 +78,8 @@ describe("GameOfLife", () => {
 
       expect(gameOfLife).to.deep.equal(
         new GameOfLife([
+          [1, 1],
           [1, 0],
-          [0, 0],
         ])
       );
     });
@@ -91,9 +95,9 @@ describe("GameOfLife", () => {
 
       expect(gameOfLife).to.deep.equal(
         new GameOfLife([
-          [1, 1, 1],
           [1, 0, 1],
-          [1, 1, 1],
+          [0, 0, 0],
+          [1, 0, 1],
         ])
       );
     });
