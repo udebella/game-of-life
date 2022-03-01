@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { GameOfLife } from "@/domain/game-of.life";
+import { GameOfLife } from "@/domain/game-of-life";
 
 describe("GameOfLife", () => {
   it("changes nothing for empty board", () => {
