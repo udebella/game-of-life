@@ -6,7 +6,7 @@ export class GameOfLife {
   constructor(board: number[][] = []) {
     this.board = board;
     this.verticalSize = this.board.length;
-    this.horizontalSize = this.board[0].length;
+    this.horizontalSize = this.board[0]?.length ?? 0;
   }
 
   public size(): [number, number] {
@@ -41,16 +41,17 @@ export class GameOfLife {
 
   private aliveNeighbours(x: number, y: number): number {
     let count = 0;
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        const newX = x + i;
-        const newJ = y + j;
+    for (let i = x - 1; i <= x + 1; i++) {
+      for (let j = y - 1; j <= y + 1; j++) {
+        if (i === x && j === y) {
+          continue;
+        }
         if (
-          newX > 0 &&
-          newX < this.horizontalSize &&
-          newJ > 0 &&
-          newJ < this.verticalSize &&
-          this.board[newJ][newX] === 1
+          i >= 0 &&
+          i < this.horizontalSize &&
+          j >= 0 &&
+          j < this.verticalSize &&
+          this.board[j][i] === 1
         ) {
           count++;
         }
