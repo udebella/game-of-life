@@ -12,7 +12,10 @@ class GameOfLife {
     if (this.board[0]) {
       for (let y = 0; y < this.board.length; y++) {
         for (let x = 0; x < this.board[y].length; x++) {
-          if (this.aliveNeighbours(x, y) < 2) {
+          if (
+            this.aliveNeighbours(x, y) < 2 ||
+            this.aliveNeighbours(x, y) > 3
+          ) {
             deadCells.push([x, y]);
           }
         }
@@ -73,6 +76,24 @@ describe("GameOfLife", () => {
         new GameOfLife([
           [1, 0],
           [0, 0],
+        ])
+      );
+    });
+  });
+
+  describe("Second rule", () => {
+    it("cell dies when having too much neighbours", () => {
+      const gameOfLife = new GameOfLife([
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1],
+      ]).nextTick();
+
+      expect(gameOfLife).to.deep.equal(
+        new GameOfLife([
+          [1, 1, 1],
+          [1, 0, 1],
+          [1, 1, 1],
         ])
       );
     });
