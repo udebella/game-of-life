@@ -14,10 +14,16 @@ class GameOfLife {
   public nextTick(): GameOfLife {
     if (this.board[0]) {
       this.board[0].forEach((_, index) => {
-        this.board[0][index] = 0;
+        if (this.aliveNeighbours(index, 0) < 2) {
+          this.board[0][index] = 0;
+        }
       });
     }
     return this;
+  }
+
+  private aliveNeighbours(x: number, y: number): number {
+    return 0;
   }
 }
 
