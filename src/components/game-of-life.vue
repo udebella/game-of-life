@@ -1,5 +1,5 @@
 <template>
-  <div v-for="(_, y) in gameOfLife.board.length" :key="y">
+  <div class="board" v-for="(_, y) in gameOfLife.board.length" :key="y">
     <game-of-life-cell
       v-for="(_, x) in gameOfLife.board[y]?.length"
       :key="`${x}.${y}`"
@@ -20,13 +20,27 @@ export default defineComponent({
   data: () => ({
     gameOfLife: new GameOfLife([
       [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 1, 0, 0, 0],
-      [0, 0, 0, 1, 1, 0, 0, 0],
+      [0, 1, 1, 1, 0, 1, 0, 0],
+      [0, 1, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 1, 1, 0, 0],
+      [0, 0, 1, 1, 0, 1, 0, 0],
+      [0, 1, 0, 1, 0, 1, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
     ]),
   }),
+  created() {
+    setInterval(() => {
+      this.gameOfLife.nextTick();
+    }, 1000);
+  },
   components: {
     GameOfLifeCell,
   },
 });
 </script>
+
+<style scoped>
+.board {
+  display: flex;
+}
+</style>
