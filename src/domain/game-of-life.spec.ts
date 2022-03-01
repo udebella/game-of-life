@@ -1,13 +1,9 @@
 import { expect } from "chai";
 
-interface GameOfLifeConstructor {
-  board: number[][];
-}
-
 class GameOfLife {
   private readonly board: number[][];
 
-  constructor({ board }: GameOfLifeConstructor = { board: [] }) {
+  constructor(board: number[][] = []) {
     this.board = board;
   }
 
@@ -50,38 +46,34 @@ describe("GameOfLife", () => {
 
   describe("First rule", () => {
     it("dies when living cell is alone", () => {
-      const gameOfLife = new GameOfLife({ board: [[1]] }).nextTick();
+      const gameOfLife = new GameOfLife([[1]]).nextTick();
 
-      expect(gameOfLife).to.deep.equal(new GameOfLife({ board: [[0]] }));
+      expect(gameOfLife).to.deep.equal(new GameOfLife([[0]]));
     });
 
     it("dies when two living cell are alone", () => {
-      const gameOfLife = new GameOfLife({ board: [[1, 1]] }).nextTick();
+      const gameOfLife = new GameOfLife([[1, 1]]).nextTick();
 
-      expect(gameOfLife).to.deep.equal(new GameOfLife({ board: [[0, 0]] }));
+      expect(gameOfLife).to.deep.equal(new GameOfLife([[0, 0]]));
     });
 
     it("only the middle cell survive when 3 cell aligned", () => {
-      const gameOfLife = new GameOfLife({ board: [[1, 1, 1]] }).nextTick();
+      const gameOfLife = new GameOfLife([[1, 1, 1]]).nextTick();
 
-      expect(gameOfLife).to.deep.equal(new GameOfLife({ board: [[0, 1, 0]] }));
+      expect(gameOfLife).to.deep.equal(new GameOfLife([[0, 1, 0]]));
     });
 
     it("cell survive when having neighbours behind them", () => {
-      const gameOfLife = new GameOfLife({
-        board: [
-          [1, 1],
-          [1, 0],
-        ],
-      }).nextTick();
+      const gameOfLife = new GameOfLife([
+        [1, 1],
+        [1, 0],
+      ]).nextTick();
 
       expect(gameOfLife).to.deep.equal(
-        new GameOfLife({
-          board: [
-            [1, 0],
-            [0, 0],
-          ],
-        })
+        new GameOfLife([
+          [1, 0],
+          [0, 0],
+        ])
       );
     });
   });
