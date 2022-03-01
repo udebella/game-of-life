@@ -5,7 +5,7 @@
       :key="`${x}.${y}`"
       :x="x"
       :y="y"
-      :board="gameOfLife.board"
+      :game="gameOfLife"
     />
   </div>
 </template>
