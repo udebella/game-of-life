@@ -24,7 +24,7 @@ const createRandomStart = (size: number) => {
 export default defineComponent({
   name: "game-of-life",
   data: () => ({
-    gameOfLife: new GameOfLife(createRandomStart(40)),
+    gameOfLife: new GameOfLife(createRandomStart(400)),
   }),
   created() {
     setInterval(() => {
