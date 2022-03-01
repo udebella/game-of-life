@@ -1,7 +1,7 @@
 <template>
-  <div class="board" v-for="(_, y) in gameOfLife.board.length" :key="y">
+  <div class="board" v-for="(_, y) in verticalSize" :key="y">
     <game-of-life-cell
-      v-for="(_, x) in gameOfLife.board[y]?.length"
+      v-for="(_, x) in horizontalSize"
       :key="`${x}.${y}`"
       :x="x"
       :y="y"
@@ -32,6 +32,16 @@ export default defineComponent({
     setInterval(() => {
       this.gameOfLife.nextTick();
     }, 1000);
+  },
+  computed: {
+    horizontalSize() {
+      const [x] = this.gameOfLife.size();
+      return x;
+    },
+    verticalSize() {
+      const [, y] = this.gameOfLife.size();
+      return y;
+    },
   },
   components: {
     GameOfLifeCell,

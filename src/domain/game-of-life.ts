@@ -5,6 +5,14 @@ export class GameOfLife {
     this.board = board;
   }
 
+  public size(): [number, number] {
+    return [this.board.length, this.board[0].length];
+  }
+
+  public cell(x: number, y: number): number {
+    return this.board[y][x];
+  }
+
   public nextTick(): GameOfLife {
     const deadCells: number[][] = [];
     const birthCells: number[][] = [];
