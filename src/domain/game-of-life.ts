@@ -1,12 +1,16 @@
 export class GameOfLife {
   private readonly board: number[][];
+  private readonly verticalSize: number;
+  private readonly horizontalSize: number;
 
   constructor(board: number[][] = []) {
     this.board = board;
+    this.verticalSize = this.board.length;
+    this.horizontalSize = this.board[0].length;
   }
 
   public size(): [number, number] {
-    return [this.board.length, this.board[0].length];
+    return [this.verticalSize, this.horizontalSize];
   }
 
   public cell(x: number, y: number): number {
@@ -16,16 +20,17 @@ export class GameOfLife {
   public nextTick(): GameOfLife {
     const deadCells: number[][] = [];
     const birthCells: number[][] = [];
-    if (this.board[0]) {
-      for (let y = 0; y < this.board.length; y++) {
-        for (let x = 0; x < this.board[y].length; x++) {
-          const aliveNeighbours = this.aliveNeighbours(x, y);
-          if (aliveNeighbours < 2 || aliveNeighbours > 3) {
-            deadCells.push([x, y]);
-          }
-          if (aliveNeighbours === 3) {
-            birthCells.push([x, y]);
-          }
+    for (let y = 0; y < this.verticalSize; y++) {
+      for (let x = 0; x < this.horizontalSize; x++) {
+        const aliveNeighbours = this.aliveNeighbours(x, y);
+        if (
+          this.board[y][x] === 1 &&
+          (aliveNeighbours < 2 || aliveNeighbours > 3)
+        ) {
+          deadCells.push([x, y]);
+        }
+        if (this.board[y][x] === 0 && aliveNeighbours === 3) {
+          birthCells.push([x, y]);
         }
       }
     }
@@ -35,20 +40,22 @@ export class GameOfLife {
   }
 
   private aliveNeighbours(x: number, y: number): number {
-    return [
-      [x - 1, y],
-      [x + 1, y],
-      [x, y - 1],
-      [x, y + 1],
-      [x - 1, y - 1],
-      [x + 1, y - 1],
-      [x - 1, y + 1],
-      [x + 1, y + 1],
-    ]
-      .filter(([, y]) => y >= 0)
-      .filter(([, y]) => y < this.board.length)
-      .filter(([x]) => x >= 0)
-      .filter(([x, y]) => x < this.board[y].length)
-      .filter(([x, y]) => this.board[y][x] === 1).length;
+    let count = 0;
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        const newX = x + i;
+        const newJ = y + j;
+        if (
+          newX > 0 &&
+          newX < this.horizontalSize &&
+          newJ > 0 &&
+          newJ < this.verticalSize &&
+          this.board[newJ][newX] === 1
+        ) {
+          count++;
+        }
+      }
+    }
+    return count;
   }
 }

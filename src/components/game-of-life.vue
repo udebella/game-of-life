@@ -1,4 +1,5 @@
 <template>
+  <button @click="stop">Stop</button>
   <div class="board" v-for="(_, y) in verticalSize" :key="y">
     <game-of-life-cell
       v-for="(_, x) in horizontalSize"
@@ -24,12 +25,13 @@ const createRandomStart = (size: number) => {
 export default defineComponent({
   name: "game-of-life",
   data: () => ({
-    gameOfLife: new GameOfLife(createRandomStart(400)),
+    gameOfLife: new GameOfLife(createRandomStart(200)),
+    interval: 0,
   }),
-  created() {
-    setInterval(() => {
+  mounted() {
+    this.interval = setInterval(() => {
       this.gameOfLife.nextTick();
-    }, 1000);
+    }, 40);
   },
   computed: {
     horizontalSize() {
@@ -39,6 +41,11 @@ export default defineComponent({
     verticalSize() {
       const [, y] = this.gameOfLife.size();
       return y;
+    },
+  },
+  methods: {
+    stop() {
+      clearInterval(this.interval);
     },
   },
   components: {
