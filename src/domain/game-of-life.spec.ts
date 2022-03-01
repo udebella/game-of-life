@@ -14,21 +14,30 @@ class GameOfLife {
   public nextTick(): GameOfLife {
     const deadCells: number[][] = [];
     if (this.board[0]) {
-      this.board[0].forEach((_, index) => {
-        if (this.aliveNeighbours(index, 0) < 2) {
-          deadCells.push([index, 0]);
+      for (let y = 0; y < this.board.length; y++) {
+        for (let x = 0; x < this.board[y].length; x++) {
+          if (this.aliveNeighbours(x, y) < 2) {
+            deadCells.push([x, y]);
+          }
         }
-      });
+      }
     }
     deadCells.forEach(([x, y]) => (this.board[y][x] = 0));
     return this;
   }
 
   private aliveNeighbours(x: number, y: number): number {
-    return [x - 1, x + 1]
-      .filter((index) => index >= 0)
-      .filter((index) => index < this.board[y].length)
-      .filter((index) => this.board[y][index] === 1).length;
+    return [
+      [x - 1, y],
+      [x + 1, y],
+      [x, y - 1],
+      [x, y + 1],
+    ]
+      .filter(([, y]) => y >= 0)
+      .filter(([, y]) => y < this.board.length)
+      .filter(([x]) => x >= 0)
+      .filter(([x, y]) => x < this.board[y].length)
+      .filter(([x, y]) => this.board[y][x] === 1).length;
   }
 }
 
@@ -56,6 +65,24 @@ describe("GameOfLife", () => {
       const gameOfLife = new GameOfLife({ board: [[1, 1, 1]] }).nextTick();
 
       expect(gameOfLife).to.deep.equal(new GameOfLife({ board: [[0, 1, 0]] }));
+    });
+
+    it("cell survive when having neighbours behind them", () => {
+      const gameOfLife = new GameOfLife({
+        board: [
+          [1, 1],
+          [1, 0],
+        ],
+      }).nextTick();
+
+      expect(gameOfLife).to.deep.equal(
+        new GameOfLife({
+          board: [
+            [1, 0],
+            [0, 0],
+          ],
+        })
+      );
     });
   });
 });
