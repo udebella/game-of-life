@@ -9,6 +9,7 @@ class GameOfLife {
 
   public nextTick(): GameOfLife {
     const deadCells: number[][] = [];
+    const birthCells: number[][] = [];
     if (this.board[0]) {
       for (let y = 0; y < this.board.length; y++) {
         for (let x = 0; x < this.board[y].length; x++) {
@@ -18,10 +19,14 @@ class GameOfLife {
           ) {
             deadCells.push([x, y]);
           }
+          if (this.aliveNeighbours(x, y) === 3) {
+            birthCells.push([x, y]);
+          }
         }
       }
     }
     deadCells.forEach(([x, y]) => (this.board[y][x] = 0));
+    birthCells.forEach(([x, y]) => (this.board[y][x] = 1));
     return this;
   }
 
@@ -90,6 +95,22 @@ describe("GameOfLife", () => {
           [1, 0, 1],
           [0, 0, 0],
           [1, 0, 1],
+        ])
+      );
+    });
+  });
+
+  describe("Fourth rule", () => {
+    it("3 adjacent cells can give birth", () => {
+      const gameOfLife = new GameOfLife([
+        [1, 1],
+        [1, 0],
+      ]).nextTick();
+
+      expect(gameOfLife).to.deep.equal(
+        new GameOfLife([
+          [1, 1],
+          [1, 1],
         ])
       );
     });
