@@ -15,18 +15,16 @@ import { defineComponent } from "vue";
 import { GameOfLife } from "@/domain/game-of-life";
 import GameOfLifeCell from "@/components/game-of-life-cell.vue";
 
+const createRandomStart = (size: number) => {
+  return [...new Array(size)].map(() =>
+    [...new Array(size)].map(() => Math.round(Math.random()))
+  );
+};
+
 export default defineComponent({
   name: "game-of-life",
   data: () => ({
-    gameOfLife: new GameOfLife([
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 1, 1, 1, 0, 1, 0, 0],
-      [0, 1, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 1, 1, 0, 0],
-      [0, 0, 1, 1, 0, 1, 0, 0],
-      [0, 1, 0, 1, 0, 1, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-    ]),
+    gameOfLife: new GameOfLife(createRandomStart(40)),
   }),
   created() {
     setInterval(() => {
