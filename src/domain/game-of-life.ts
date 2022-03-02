@@ -41,22 +41,15 @@ export class GameOfLife {
 
   private aliveNeighbours(x: number, y: number): number {
     let count = 0;
-    for (let i = x - 1; i <= x + 1; i++) {
-      for (let j = y - 1; j <= y + 1; j++) {
-        if (i === x && j === y) {
-          continue;
-        }
-        if (
-          i >= 0 &&
-          i < this.horizontalSize &&
-          j >= 0 &&
-          j < this.verticalSize &&
-          this.board[j][i] === 1
-        ) {
-          count++;
-        }
+    const minX = x - 1 > 0 ? x - 1 : 0;
+    const maxX = x + 1 < this.horizontalSize ? x + 1 : this.horizontalSize - 1;
+    const minY = y - 1 > 0 ? y - 1 : 0;
+    const maxY = y + 1 < this.verticalSize ? y + 1 : this.verticalSize - 1;
+    for (let i = minX; i <= maxX; i++) {
+      for (let j = minY; j <= maxY; j++) {
+        count += this.board[j][i];
       }
     }
-    return count;
+    return count - this.board[y][x];
   }
 }
